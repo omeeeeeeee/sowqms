@@ -1,23 +1,36 @@
 import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // this key must stay server-side only
-);
+// Create the Supabase client using environment variables
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 export async function POST({ request }) {
-  const body = await request.json();
-  const { ph, turbidity } = body;
+  try {
+    // Parse the JSON body sent by Arduino
+    const { ph, turbidity } = await request.json();
 
-  const { data, error } = await supabase
-    .from('sensor_readings')
-    .insert([{ ph, turbidity }]);
+    if (typeof ph !== 'number' || typeof turbidity !== 'number') {
+      return json({ success: false, message: 'Invalid data format' }, { status: 400 });
+    }
 
-  if (error) {
-    console.error('Supabase insert error', error);
-    return json({ success: false }, { status: 500 });
+    // Insert the new sensor data into the sensor_readings table
+    const { error } = await supabase
+      .from('sensor_readings')
+      .insert([
+        { ph, turbidity } // matches your table fields
+      ]);
+
+    if (error) {
+      console.error('Supabase Insert Error:', error);
+      return json({ success: false, message: 'Failed to insert into database' }, { status: 500 });
+    }
+
+    return json({ success: true, message: 'Sensor data saved successfully' });
+  } catch (err) {
+    console.error('Request Processing Error:', err);
+    return json({ success: false, message: 'Invalid request body' }, { status: 400 });
   }
-
-  return json({ success: true });
 }
