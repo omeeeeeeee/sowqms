@@ -1,59 +1,44 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
-</script>
+<title>SOWQMS</title>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<div class="bg-blue-500 flex flex-row justify-center rounded-b-md p-5">
+	<div class="flex flex-row space-x-2 items-center">
+		<div class="w-10 h-10 rounded-full bg-neutral-300"></div>
+		<p class="text-sm text-bold text-white">Smart Open Water Quality Monitoring System</p>
+	</div>
+</div>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
+<div class="py-5 px-7.5 space-y-2">
 
-		to your new<br />SvelteKit app
-	</h1>
+<p class="text-[25px] font-semibold">Current readings</p>
+<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
+	<div class="flex flex-col items-center space-y-1.5">
+		<p>pH Level</p>
+		<p class="text-[40px] mt-[-13px] font-bold">7.2</p>
+		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+		<p class="text-sm">neutral</p>
+	</div>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+	<div class="flex flex-col items-center space-y-1.5">
+		<p>Turbidity</p>
+		<p class="text-[40px] mt-[-13px] font-bold">1.3</p>
+		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+		<p class="text-sm">low</p>
+	</div>
+</div>
 
-	<Counter />
-</section>
+<p class="text-[25px] font-semibold">Historical data</p>
+<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
+	<div class="flex flex-col items-center space-y-1.5">
+		<p>pH Level</p>
+		<p>*insert chart here*</p>
+	</div>
 
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
+	<div class="flex flex-col items-center space-y-1.5">
+		<p>Turbidity</p>
+		<p>*insert chart here*</p>
+	</div>
+</div>
 
-	h1 {
-		width: 100%;
-	}
+</div>
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+<canvas bind:this={chartCanvas} id="myChart"></canvas>
