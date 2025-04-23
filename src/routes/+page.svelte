@@ -41,4 +41,3 @@
 
 </div>
 
-<canvas bind:this={chartCanvas} id="myChart"></canvas>
