@@ -1,27 +1,3 @@
-<script lang="ts">
-  import { onMount } from 'svelte';
-  import { supabase } from '$lib/supabase';
-
-  let ph: number | null = null;
-  let turbidity: number | null = null;
-
-  onMount(async () => {
-    const { data, error } = await supabase
-      .from('sensor_readings')
-      .select('ph, turbidity')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-
-    if (error) {
-      console.error('Error fetching latest data:', error);
-    } else {
-      ph = data.ph;
-      turbidity = data.turbidity;
-    }
-  });
-</script>
-
 <title>SOWQMS</title>
 
 <div class="bg-blue-500 flex flex-row justify-center rounded-b-md p-5">

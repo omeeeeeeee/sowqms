@@ -38,3 +38,24 @@ export async function POST({ request }) {
         return json({ success: false, message: 'Invalid request body' }, { status: 400 });
     }
 }
+
+export async function GET() {
+  try {
+    const { data, error } = await supabase
+      .from('sensor_readings')
+      .select('ph, turbidity, created_at')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase fetch error:', error);
+      return json({ success: false, message: 'Failed to fetch data' }, { status: 500 });
+    }
+
+    return json({ success: true, data });
+  } catch (err) {
+    console.error('Unexpected GET error:', err);
+    return json({ success: false, message: 'Unexpected error' }, { status: 500 });
+  }
+}
