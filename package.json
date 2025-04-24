@@ -23,11 +23,11 @@
 		"vite": "^6.2.5"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^2.49.4",
-		"dotenv": "^16.5.0",
 		"@highcharts/svelte": "^1.1.1",
+		"@supabase/supabase-js": "^2.49.4",
 		"@tailwindcss/vite": "^4.1.4",
 		"chart.js": "^2.9.4",
+		"dotenv": "^16.5.0",
 		"highcharts": "^12.2.0",
 		"tailwindcss": "^4.1.4"
 	}
