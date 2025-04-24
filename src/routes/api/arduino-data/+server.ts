@@ -1,9 +1,11 @@
 import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
+import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+// const supabaseUrl = process.env.SUPABASE_URL!;
+// const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+// const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 // Added currReading variable
 // let currReading: { ph: number; turbidity: number; created_at: string } | null = null;
