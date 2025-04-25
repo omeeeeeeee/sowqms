@@ -1,8 +1,10 @@
 <script>
 	export let data;
+	const { reading } = data;
 </script>
 
 <title>SOWQMS</title>
+
 
 <div class="bg-blue-500 flex flex-row justify-center rounded-b-md p-5">
 	<div class="flex flex-row space-x-2 items-center">
@@ -17,17 +19,18 @@
 <div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
 	<div class="flex flex-col items-center space-y-1.5">
 		<p>pH Level</p>
-		<p class="text-[40px] mt-[-13px] font-bold">7.3</p>
+		<p class="text-[40px] mt-[-13px] font-bold">{(reading.ph).toFixed(1)}</p>
 		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
 		<p class="text-sm">neutral</p>
 	</div>
 
 	<div class="flex flex-col items-center space-y-1.5">
 		<p>Turbidity</p>
-		<p class="text-[40px] mt-[-13px] font-bold">1.3</p>
+		<p class="text-[40px] mt-[-13px] font-bold">{(reading.turbidity).toFixed(1)}</p>
 		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
 		<p class="text-sm">low</p>
 	</div>
+	<p>Last updated: {reading.created_at}</p>
 </div>
 
 <p class="text-[25px] font-semibold">Historical data</p>
