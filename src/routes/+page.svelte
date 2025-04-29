@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let data;
-	const { reading } = data;
+	const { reading, phValues, turbValues, dates } = data;
 
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
