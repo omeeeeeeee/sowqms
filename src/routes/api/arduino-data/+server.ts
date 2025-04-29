@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
-import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
+import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ARDUINO_API_KEY } from '$env/static/private';
 
 // const supabaseUrl = process.env.SUPABASE_URL!;
 // const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -12,6 +12,11 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 export async function POST({ request }) {
     console.log("Received POST request!");
+    const X_ARDUINO_API_KEY = request.headers.get("ARDUINO_API_KEY");
+
+    if (ARDUINO_API_KEY !== X_ARDUINO_API_KEY) {
+        return json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     try {
         const raw = await request.text();
