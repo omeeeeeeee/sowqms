@@ -6,6 +6,8 @@
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { createClient } from '@supabase/supabase-js';
+	import { chartRender } from '$lib/chartRender.js';
+	import { BarData } from '$lib/chartData.js';
   
 	const supabase = createClient(
 	  PUBLIC_SUPABASE_URL,
@@ -56,31 +58,43 @@
 <p class="text-[25px] font-semibold">Current readings</p>
 <div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
 	<div class="flex flex-col items-center space-y-1.5">
-		<p>pH Level</p>
-		<p class="text-[40px] mt-[-13px] font-bold">{$ph ?? reading.ph ?? "Waiting..."}</p>
-		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-		<p class="text-sm">neutral</p>
+		<p>Water Quality</p>
+		<p class="text-[40px] mt-[-13px] font-bold">SAFE :)</p>
 	</div>
 
-	<div class="flex flex-col items-center space-y-1.5">
-		<p>Turbidity</p>
-		<p class="text-[40px] mt-[-13px] font-bold">{$turbidity ?? reading.turbidity ??'Waiting...'}</p>
-		<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-		<p class="text-sm">low</p>
+	<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
+		<div class="flex flex-col items-center space-y-1.5">
+			<p>pH Level</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{$ph ?? reading.ph ?? "Waiting..."}</p>
+			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+			<p class="text-sm">neutral</p>
+		</div>
+
+		<div class="flex flex-col items-center space-y-1.5">
+			<p>Turbidity</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{$turbidity ?? reading.turbidity ??'Waiting...'}</p>
+			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+			<p class="text-sm">low</p>
+		</div>
 	</div>
-	<p>Last updated: {$lastUpdated ?? reading.created_at ?? 'Waiting...'}</p>
+
+	<div class="w-full flex flex-row justify-center">
+		<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'Waiting...'}</p>
+	</div>
 </div>
 
 <p class="text-[25px] font-semibold">Historical data</p>
 <div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
-	<div class="flex flex-col items-center space-y-1.5">
-		<p>pH Level</p>
-		<p>*insert chart here*</p>
-	</div>
+	<div class="flex flex-wrap justify-center sm:space-x-20 space-y-6.5 sm:space-y-0">
+		<div class="flex flex-col items-center space-y-1.5">
+			<p>pH Level</p>
+			<canvas use:chartRender={BarData}></canvas>
+		</div>
 
-	<div class="flex flex-col items-center space-y-1.5">
-		<p>Turbidity</p>
-		<p>*insert chart here*</p>
+		<div class="flex flex-col items-center space-y-1.5">
+			<p>Turbidity</p>
+			<canvas use:chartRender={BarData}></canvas>
+		</div>
 	</div>
 </div>
 
