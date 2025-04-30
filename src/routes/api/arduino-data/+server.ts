@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
-import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
+import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ARDUINO_API_KEY } from '$env/static/private';
 
 // const supabaseUrl = process.env.SUPABASE_URL!;
 // const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -12,6 +12,11 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 export async function POST({ request }) {
     console.log("Received POST request!");
+    const X_ARDUINO_API_KEY = request.headers.get("ARDUINO_API_KEY");
+
+    if (ARDUINO_API_KEY !== X_ARDUINO_API_KEY) {
+        return json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     try {
         const raw = await request.text();
@@ -49,32 +54,53 @@ export async function POST({ request }) {
     }
 }
 
-export async function GET() {
+export async function GET({ url }) {
+  const from = url.searchParams.get('from');
+  const to = url.searchParams.get('to');
 
-    // Return the most recent reading based on memory
-    // if (currReading) {
-    //   return json({ success: true, data: currReading });
-    // }
+  try {
+    // Fetch the most recent reading
+    const { data: latestReading, error: latestError } = await supabase
+      .from('sensor_readings')
+      .select('ph, turbidity, created_at')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    // return json({ success: false, message: 'No data available' }, { status: 404 });
-    
-    // Fetches from supabase and returns the most recent reading
-    try {
-        const { data, error } = await supabase
-        .from('sensor_readings')
-        .select('ph, turbidity, created_at')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-        if (error) {
-        console.error('Supabase fetch error:', error);
-        return json({ success: false, message: 'Failed to fetch data' }, { status: 500 });
-        }
-
-        return json({ success: true, data });
-    } catch (err) {
-        console.error('Unexpected GET error:', err);
-        return json({ success: false, message: 'Unexpected error' }, { status: 500 });
+    if (latestError) {
+      console.error('Supabase latest fetch error:', latestError);
+      return json({ success: false, message: 'Failed to fetch latest reading' }, { status: 500 });
     }
+
+    // Fetch readings within date range
+    let rangeQuery = supabase
+      .from('sensor_readings')
+      .select('ph, turbidity, created_at')
+      .order('created_at', { ascending: true });
+
+    if (from) {
+      rangeQuery = rangeQuery.gte('created_at', from);
+    }
+    if (to) {
+      rangeQuery = rangeQuery.lte('created_at', to);
+    }
+
+    const { data: rangeReadings, error: rangeError } = await rangeQuery;
+
+    if (rangeError) {
+      console.error('Supabase range fetch error:', rangeError);
+      return json({ success: false, message: 'Failed to fetch range readings' }, { status: 500 });
+    }
+
+    // Send both as one bigger JSON
+    return json({
+      success: true,
+      latest: latestReading,
+      range: rangeReadings
+    });
+
+  } catch (err) {
+    console.error('Unexpected GET error:', err);
+    return json({ success: false, message: 'Unexpected server error' }, { status: 500 });
+  }
 }
