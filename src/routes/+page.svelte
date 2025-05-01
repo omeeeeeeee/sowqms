@@ -7,7 +7,8 @@
 	import { writable } from 'svelte/store';
 	import { createClient } from '@supabase/supabase-js';
 	import { chartRender } from '$lib/chartRender.js';
-	import { BarData } from '$lib/chartData.js';
+	import { BarData } from '$lib/chartData';
+	import Bar from '$lib/Bar.svelte'	
   
 	const supabase = createClient(
 	  PUBLIC_SUPABASE_URL,
@@ -59,27 +60,30 @@
 <div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
 	<div class="flex flex-col items-center space-y-1.5">
 		<p>Water Quality</p>
-		<p class="text-[40px] mt-[-13px] font-bold">SAFE :)</p>
+		<p class="text-[40px] mt-[-13px] font-bold">SAFE</p>
 	</div>
 
 	<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>pH Level</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{$ph ?? reading.ph ?? "Waiting..."}</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{$ph ?? reading.ph ?? "N/A"}</p>
+			<!-- 
+				<Bar />
+			-->
 			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
 			<p class="text-sm">neutral</p>
 		</div>
 
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>Turbidity</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{$turbidity ?? reading.turbidity ??'Waiting...'}</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{$turbidity ?? reading.turbidity ??'N/A'}</p>
 			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
 			<p class="text-sm">low</p>
 		</div>
 	</div>
 
 	<div class="w-full flex flex-row justify-center">
-		<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'Waiting...'}</p>
+		<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'N/A'}</p>
 	</div>
 </div>
 
@@ -88,12 +92,12 @@
 	<div class="flex flex-wrap justify-center sm:space-x-20 space-y-6.5 sm:space-y-0">
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>pH Level</p>
-			<canvas use:chartRender={BarData}></canvas>
+			<canvas use:chartRender={BarData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)')} class="max-h-80 w-90"></canvas>
 		</div>
 
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>Turbidity</p>
-			<canvas use:chartRender={BarData}></canvas>
+			<canvas use:chartRender={BarData('turbidity', dates, turbValues, 'rgba(90, 145, 90, 0.8)')}  class="max-h-80 w-90"></canvas>
 		</div>
 	</div>
 </div>
