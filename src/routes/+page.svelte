@@ -1,25 +1,28 @@
 <script lang="ts">
+	// get readings from +page.js
 	export let data;
 	const { reading, phValues, turbValues, dates, locID, locAddress } = data;
 
+	// imports
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { createClient } from '@supabase/supabase-js';
 	import { chartRender } from '$lib/chartRender.js';
-	import { BarData } from '$lib/chartData';
+	import { ChartData } from '$lib/chartData';
 	import { goto } from '$app/navigation';
 	import Dropdown from '$lib/Dropdown.svelte'	
 
+	// variables for ensuring page refreshes when new location is selected
 	let currentLoc = "";
 	let selectedLoc = "";
+	let locOptions = locID.map((v, i) => ({ id: v, location: locAddress[i] }));
 	$: if (selectedLoc && currentLoc != selectedLoc) {
 		goto(`/?location=${selectedLoc}`, { invalidateAll: true });
     	window.location.href = `/?location=${selectedLoc}`;
   	}
 
-	let options = locID.map((v, i) => ({ id: v, location: locAddress[i] }));
-  
+	// get latest i.e. last pushed reading
 	const supabase = createClient(
 	  PUBLIC_SUPABASE_URL,
 	  PUBLIC_SUPABASE_ANON_KEY
@@ -58,7 +61,16 @@
 	  };
 	});
 
-	
+	// variables for ph level chart filter
+	let phDateFilter = '';
+	let phChart;
+	$: phChart = ChartData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)', phDateFilter);
+
+	// variables for turbidity chart filter
+	let turbDateFilter = '';
+	let turbChart;
+	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', turbDateFilter);
+
 	$: currentPh = $ph ?? reading.ph;
 
 	$: phStatus =
@@ -110,54 +122,67 @@
 	</div>
 </div>
 
+
 <div class="py-5 px-7.5 space-y-2">
+	<!-- <div class="flex flex-wrap"> -->
+		<p class="text-[25px] font-semibold">Location</p>
+		<Dropdown bind:selected={selectedLoc} options={locOptions}/>
+	<!-- </div> -->
+
+	<br>
+
+	<p class="text-[25px] font-semibold">Current readings</p>
+	<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 mt-3 space-y-6.5">
+		<div class="flex flex-col items-center space-y-1.5">
+			<p>Water Quality</p>
+			<p class="text-[40px] mt-[-13px] font-bold {waterStatusClass}">{waterStatus}</p>
+		</div>
+
+		<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
+			<div class="flex flex-col items-center space-y-1.5">
+				<p>pH Level</p>
+				<p class="text-[40px] mt-[-13px] font-bold">{currentPh.toFixed(1) ?? "N/A"}</p>
+				<!-- 
+					<Bar />
+				-->
+				<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+				<p class="text-sm font-semibold {phStatus.toLowerCase()}">{phStatus}</p>
+			</div>
+
+			<div class="flex flex-col items-center space-y-1.5">
+				<p>Turbidity</p>
+				<p class="text-[40px] mt-[-13px] font-bold">{currentTurbidity.toFixed(1) ?? 'N/A'}</p>
+				<!-- 
+					<Bar />
+				-->
+				<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
+				<p class="text-sm font-semibold {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
+			</div>
+		</div>
+
+		<div class="w-full flex flex-row justify-center">
+			<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'N/A'}</p>
+		</div>
+	</div>
 	
-<p class="text-[25px] font-semibold">Current readings</p>
-<Dropdown bind:selected={selectedLoc} options={options}/>
-<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 mt-3 space-y-6.5">
-	<div class="flex flex-col items-center space-y-1.5">
-		<p>Water Quality</p>
-		<p class="text-[40px] mt-[-13px] font-bold {waterStatusClass}">{waterStatus}</p>
-	</div>
+	<br>
 
-	<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
-		<div class="flex flex-col items-center space-y-1.5">
-			<p>pH Level</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{currentPh ?? "N/A"}</p>
-			<!-- 
-				<Bar />
-			-->
-			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-			<p class="text-sm font-semibold {phStatus.toLowerCase()}">{phStatus}</p>
-		</div>
+	<p class="text-[25px] font-semibold">Historical data</p>
+	<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
+		<div class="flex flex-wrap sm:space-x-50 items-center justify-center space-y-6.5 sm:space-y-0">
+			<div class="flex flex-col items-center space-y-1.5">
+				<p>pH Level</p>
+				<input type="date" bind:value={phDateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
+				<canvas use:chartRender={phChart} class="max-h-80 w-full sm:w-100"></canvas>
+			</div>
 
-		<div class="flex flex-col items-center space-y-1.5">
-			<p>Turbidity</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{currentTurbidity ?? 'N/A'}</p>
-			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-			<p class="text-sm font-semibold {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
+			<div class="flex flex-col items-center space-y-1.5">
+				<p>Turbidity</p>
+				<input type="date" bind:value={turbDateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
+				<canvas use:chartRender={turbChart}  class="max-h-80 w-full sm:w-100"></canvas>
+			</div>
 		</div>
 	</div>
-
-	<div class="w-full flex flex-row justify-center">
-		<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'N/A'}</p>
-	</div>
-</div>
-
-<p class="text-[25px] font-semibold">Historical data</p>
-<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
-	<div class="flex flex-wrap justify-center sm:space-x-20 space-y-6.5 sm:space-y-0">
-		<div class="flex flex-col items-center space-y-1.5">
-			<p>pH Level</p>
-			<canvas use:chartRender={BarData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)')} class="max-h-80 w-150"></canvas>
-		</div>
-
-		<div class="flex flex-col items-center space-y-1.5">
-			<p>Turbidity</p>
-			<canvas use:chartRender={BarData('turbidity', dates, turbValues, 'rgba(90, 145, 90, 0.8)')}  class="max-h-80 w-150"></canvas>
-		</div>
-	</div>
-</div>
 
 </div>
 
