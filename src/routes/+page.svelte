@@ -77,7 +77,7 @@
 	$: waterStatus =
 		currentPh === null || currentTurbidity === null
 			? "Unknown"
-			: (currentPh >= 6.5 && currentPh <= 8.5 && currentTurbidity < 5)
+			: (currentPh >= 6.5 && currentPh <= 8.5 && currentTurbidity <= 10)
 			? "SAFE"
 			: "UNSAFE";
 
