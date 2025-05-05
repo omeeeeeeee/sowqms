@@ -54,6 +54,26 @@
 		: currentPh < 7
 		? "Acidic"
 		: "Basic";
+
+	$: currentTurbidity = $turbidity ?? reading.turbidity;
+
+	// Ref: https://in-situ.com/en/faq/water-quality-information/turbidity-faqs/what-are-typical-turbidity-values-in-natural-environments?srsltid=AfmBOoqX5CR7qDVYosA1G-2JTLVTodYZz-X38FniG8vWrQ1wAvgPEFFp
+	$: turbidityStatus =
+	currentTurbidity === undefined || currentTurbidity === null
+		? "N/A"
+		: currentTurbidity <= 1
+		? "Safe (Drinking/Treated)"
+		: currentTurbidity <= 10
+		? "Safe (Freshwater)"
+		: currentTurbidity <= 100
+		? "Stressful to Aquatic Life"
+		: "Unsafe for Aquatic Life";
+
+	$: turbidityStatusClass =
+		turbidityStatus.includes("Unsafe") ? "unsafe" :
+		turbidityStatus.includes("Stressful") ? "stress" :
+		turbidityStatus.includes("Safe") ? "safe" : "";
+
 </script>
 
 <title>SOWQMS</title>
@@ -88,9 +108,9 @@
 
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>Turbidity</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{$turbidity ?? reading.turbidity ??'N/A'}</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{currentTurbidity ?? 'N/A'}</p>
 			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-			<p class="text-sm">low</p>
+			<p class="text-sm font-semibold {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
 		</div>
 	</div>
 
@@ -120,5 +140,8 @@
 	.acidic { color: red; }
 	.neutral { color: gray; }
 	.basic { color: blue; }
+	.unsafe { color: red; }
+	.stress { color: orange; }
+	.safe { color: green; }
 </style>
 
