@@ -60,15 +60,18 @@ export async function GET({ url }) {
   const from = url.searchParams.get('from');
   const to = url.searchParams.get('to');
   const location = url.searchParams.get('location');
-
+  
   try {
     // Fetch the most recent reading
-    const { data: latestReading, error: latestError } = await supabase
+    let latestQuery = supabase
       .from('sensor_readings')
       .select('ph, turbidity, created_at')
       .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+
+    if (location) latestQuery = latestQuery.eq('location', location);
+    latestQuery = latestQuery.limit(1).maybeSingle();
+
+    const { data: latestReading, error: latestError } = await latestQuery;
 
     if (latestError) {
       console.error('Supabase latest fetch error:', latestError);
@@ -93,7 +96,7 @@ export async function GET({ url }) {
     }
 
     // Fetch locations
-    let { data: locations, error: locError } = await supabase
+    const { data: locations, error: locError } = await supabase
       .from('sensor_locations')
       .select('id, longitude, latitude')
 

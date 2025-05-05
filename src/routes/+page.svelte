@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let data;
-	const { reading, phValues, turbValues, dates } = data;
+	const { reading, phValues, turbValues, dates, locID, locAddress } = data;
 
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
@@ -8,7 +8,17 @@
 	import { createClient } from '@supabase/supabase-js';
 	import { chartRender } from '$lib/chartRender.js';
 	import { BarData } from '$lib/chartData';
-	import Bar from '$lib/Bar.svelte'	
+	import { goto } from '$app/navigation';
+	import Dropdown from '$lib/Dropdown.svelte'	
+
+	let currentLoc = "";
+	let selectedLoc = "";
+	$: if (selectedLoc && currentLoc != selectedLoc) {
+		goto(`/?location=${selectedLoc}`, { invalidateAll: true });
+    	window.location.href = `/?location=${selectedLoc}`;
+  	}
+
+	let options = locID.map((v, i) => ({ id: v, location: locAddress[i] }));
   
 	const supabase = createClient(
 	  PUBLIC_SUPABASE_URL,
@@ -20,6 +30,11 @@
 	const lastUpdated = writable<string | null>(null);
   
 	onMount(() => {
+	  const url = new URL(window.location.href);
+      const queryParams = new URLSearchParams(url.search);
+      currentLoc = queryParams.get('location') || '';
+	  selectedLoc = currentLoc;
+
 	  const channel = supabase
 		.channel('realtime:sensor_readings')
 		.on(
@@ -88,7 +103,6 @@
 
 <title>SOWQMS</title>
 
-
 <div class="bg-blue-500 flex flex-row justify-center rounded-b-md p-5">
 	<div class="flex flex-row space-x-2 items-center">
 		<div class="w-10 h-10 rounded-full bg-neutral-300"></div>
@@ -97,9 +111,10 @@
 </div>
 
 <div class="py-5 px-7.5 space-y-2">
-
+	
 <p class="text-[25px] font-semibold">Current readings</p>
-<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
+<Dropdown bind:selected={selectedLoc} options={options}/>
+<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 mt-3 space-y-6.5">
 	<div class="flex flex-col items-center space-y-1.5">
 		<p>Water Quality</p>
 		<p class="text-[40px] mt-[-13px] font-bold {waterStatusClass}">{waterStatus}</p>
@@ -134,12 +149,12 @@
 	<div class="flex flex-wrap justify-center sm:space-x-20 space-y-6.5 sm:space-y-0">
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>pH Level</p>
-			<canvas use:chartRender={BarData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)')} class="max-h-80 w-90"></canvas>
+			<canvas use:chartRender={BarData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)')} class="max-h-80 w-150"></canvas>
 		</div>
 
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>Turbidity</p>
-			<canvas use:chartRender={BarData('turbidity', dates, turbValues, 'rgba(90, 145, 90, 0.8)')}  class="max-h-80 w-90"></canvas>
+			<canvas use:chartRender={BarData('turbidity', dates, turbValues, 'rgba(90, 145, 90, 0.8)')}  class="max-h-80 w-150"></canvas>
 		</div>
 	</div>
 </div>
