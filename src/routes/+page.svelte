@@ -74,6 +74,16 @@
 		turbidityStatus.includes("Stressful") ? "stress" :
 		turbidityStatus.includes("Safe") ? "safe" : "";
 
+	$: waterStatus =
+		currentPh === null || currentTurbidity === null
+			? "Unknown"
+			: (currentPh >= 6.5 && currentPh <= 8.5 && currentTurbidity < 5)
+			? "SAFE"
+			: "UNSAFE";
+
+	$: waterStatusClass =
+		waterStatus === "SAFE" ? "wssafe" :
+		waterStatus === "UNSAFE" ? "wsunsafe" : "";
 </script>
 
 <title>SOWQMS</title>
@@ -92,7 +102,7 @@
 <div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
 	<div class="flex flex-col items-center space-y-1.5">
 		<p>Water Quality</p>
-		<p class="text-[40px] mt-[-13px] font-bold">SAFE</p>
+		<p class="text-[40px] mt-[-13px] font-bold {waterStatusClass}">{waterStatus}</p>
 	</div>
 
 	<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
@@ -138,10 +148,12 @@
 
 <style>
 	.acidic { color: red; }
-	.neutral { color: gray; }
+	.neutral { color: black; }
 	.basic { color: blue; }
 	.unsafe { color: red; }
 	.stress { color: orange; }
 	.safe { color: green; }
+	.wssafe { color: green; }
+  	.wsunsafe { color: #d1001f; }
 </style>
 
