@@ -21,6 +21,7 @@ export async function load({ fetch }) {
 		phValues: phValues ?? null,
 		turbValues: turbValues ?? null,
 		dates: dates ?? null,
-		locID: locID ?? null
+		locID: locID ?? null,
+		locAddress: locAddress ?? null
 	};
 }
