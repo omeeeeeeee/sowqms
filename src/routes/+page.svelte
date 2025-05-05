@@ -42,6 +42,18 @@
 		supabase.removeChannel(channel);
 	  };
 	});
+
+	
+	$: currentPh = $ph ?? reading.ph;
+
+	$: phStatus =
+		currentPh === undefined || currentPh === null
+		? "N/A"
+		: currentPh === 7
+		? "Neutral"
+		: currentPh < 7
+		? "Acidic"
+		: "Basic";
 </script>
 
 <title>SOWQMS</title>
@@ -66,12 +78,12 @@
 	<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
 		<div class="flex flex-col items-center space-y-1.5">
 			<p>pH Level</p>
-			<p class="text-[40px] mt-[-13px] font-bold">{$ph ?? reading.ph ?? "N/A"}</p>
+			<p class="text-[40px] mt-[-13px] font-bold">{currentPh ?? "N/A"}</p>
 			<!-- 
 				<Bar />
 			-->
 			<div class="w-50 h-2.5 bg-white rounded-sm border-1 border-gray-200"></div>
-			<p class="text-sm">neutral</p>
+			<p class="text-sm font-semibold {phStatus.toLowerCase()}">{phStatus}</p>
 		</div>
 
 		<div class="flex flex-col items-center space-y-1.5">
@@ -103,4 +115,10 @@
 </div>
 
 </div>
+
+<style>
+	.acidic { color: red; }
+	.neutral { color: gray; }
+	.basic { color: blue; }
+</style>
 
