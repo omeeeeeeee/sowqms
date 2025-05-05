@@ -27,6 +27,8 @@ export async function POST({ request }) {
 
         const { ph, turbidity } = body;
 
+        const location = "281a1180-cbda-4150-a344-fadf02761992";
+
         if (typeof ph !== 'number' || typeof turbidity !== 'number') {
             console.error('Invalid types:', { phType: typeof ph, turbidityType: typeof turbidity });
             return json({ success: false, message: 'Invalid data format' }, { status: 400 });
@@ -34,8 +36,8 @@ export async function POST({ request }) {
 
         const { data, error } = await supabase
             .from('sensor_readings')
-            .insert([{ ph, turbidity }])
-            .select('ph, turbidity, created_at')
+            .insert([{ ph, turbidity, location }])
+            .select('ph, turbidity, created_at, location')
             .maybeSingle(); // fetch inserted row immediately
 
         if (error || !data) {
@@ -57,6 +59,7 @@ export async function POST({ request }) {
 export async function GET({ url }) {
   const from = url.searchParams.get('from');
   const to = url.searchParams.get('to');
+  const location = url.searchParams.get('location');
 
   try {
     // Fetch the most recent reading
@@ -75,15 +78,12 @@ export async function GET({ url }) {
     // Fetch readings within date range
     let rangeQuery = supabase
       .from('sensor_readings')
-      .select('ph, turbidity, created_at')
+      .select('ph, turbidity, created_at, location')
       .order('created_at', { ascending: true });
 
-    if (from) {
-      rangeQuery = rangeQuery.gte('created_at', from);
-    }
-    if (to) {
-      rangeQuery = rangeQuery.lte('created_at', to);
-    }
+    if (from) rangeQuery = rangeQuery.gte('created_at', from);
+    if (to) rangeQuery = rangeQuery.lte('created_at', to);
+    if (location) rangeQuery = rangeQuery.eq('location', location);
 
     const { data: rangeReadings, error: rangeError } = await rangeQuery;
 
@@ -92,11 +92,22 @@ export async function GET({ url }) {
       return json({ success: false, message: 'Failed to fetch range readings' }, { status: 500 });
     }
 
+    // Fetch locations
+    let { data: locations, error: locError } = await supabase
+      .from('sensor_locations')
+      .select('id, longitude, latitude')
+
+    if (locError) {
+      console.error('Supabase location fetch error:', locError);
+      return json({ success: false, message: 'Failed to fetch locations' }, { status: 500 });
+    }
+
     // Send both as one bigger JSON
     return json({
       success: true,
       latest: latestReading,
-      range: rangeReadings
+      range: rangeReadings,
+      locations: locations
     });
 
   } catch (err) {
