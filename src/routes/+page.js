@@ -1,5 +1,8 @@
-export async function load({ fetch }) {
-	const res = await fetch('/api/arduino-data', { method: 'GET' } );
+export async function load({ fetch, url }) {
+	const loc = url.searchParams.get('location');
+	const locParam = loc ? '?location=' + loc : ''; 
+
+	const res = await fetch(`/api/arduino-data${locParam}`, { method: 'GET' } );
 	const result = await res.json();
 
 	const phValues = result.range.map(item => item.ph);
