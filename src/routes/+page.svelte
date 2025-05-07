@@ -61,15 +61,14 @@
 	  };
 	});
 
-	// variables for ph level chart filter
-	let phDateFilter = '';
-	let phChart;
-	$: phChart = ChartData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)', phDateFilter);
+	// variables for ph level, turbidity chart filter
+	let dateFilter = '';
 
-	// variables for turbidity chart filter
-	let turbDateFilter = '';
+	let phChart;
+	$: phChart = ChartData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)', dateFilter);
+
 	let turbChart;
-	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', turbDateFilter);
+	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', dateFilter);
 
 	$: currentPh = $ph ?? reading.ph;
 
@@ -168,17 +167,20 @@
 	<br>
 
 	<p class="text-[25px] font-semibold">Historical data</p>
+	
 	<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
+		<div class="flex flex-row space-x-2.5 items-center justify-center">
+			<p>Date filter: </p>
+			<input type="date" bind:value={dateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
+		</div>
 		<div class="flex flex-wrap sm:space-x-50 items-center justify-center space-y-6.5 sm:space-y-0">
 			<div class="flex flex-col items-center space-y-1.5">
 				<p>pH Level</p>
-				<input type="date" bind:value={phDateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
 				<canvas use:chartRender={phChart} class="max-h-80 w-full sm:w-100"></canvas>
 			</div>
 
 			<div class="flex flex-col items-center space-y-1.5">
 				<p>Turbidity</p>
-				<input type="date" bind:value={turbDateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
 				<canvas use:chartRender={turbChart}  class="max-h-80 w-full sm:w-100"></canvas>
 			</div>
 		</div>
