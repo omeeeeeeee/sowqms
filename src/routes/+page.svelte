@@ -11,7 +11,8 @@
 	import { chartRender } from '$lib/chartRender.js';
 	import { ChartData } from '$lib/chartData';
 	import { goto } from '$app/navigation';
-	import Dropdown from '$lib/Dropdown.svelte'	
+	import Dropdown from '$lib/Dropdown.svelte';
+	import { DateTime } from 'luxon';	
 
 	// variables for ensuring page refreshes when new location is selected
 	let currentLoc = "";
@@ -160,7 +161,16 @@
 		</div>
 
 		<div class="w-full flex flex-row justify-center">
-			<p class="text-gray-400 text-[12px]">Last updated: {$lastUpdated ?? reading.created_at ?? 'N/A'}</p>
+			<p class="text-gray-400 text-[12px]">
+			Last updated: 
+			{#if $lastUpdated || reading.created_at}
+				{DateTime.fromISO($lastUpdated ?? reading.created_at, { zone: 'utc' })
+					.setZone('Asia/Manila')
+					.toFormat('MMMM d, yyyy hh:mm:ss a')}
+			{:else}
+				N/A
+			{/if}
+			</p>
 		</div>
 	</div>
 	
