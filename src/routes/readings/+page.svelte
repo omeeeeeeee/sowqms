@@ -170,7 +170,7 @@
 	</div>
 	
 	<br>
-	<!--
+
 	<p class="text-[25px] font-semibold">Historical data</p>
 	
 	<div class="bg-gray-100 border-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-md p-5 space-y-6.5">
@@ -190,7 +190,6 @@
 			</div>
 		</div>
 	</div>
-	-->
 </div>
 
 <style>
