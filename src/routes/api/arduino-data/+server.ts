@@ -98,7 +98,7 @@ export async function GET({ url }) {
     // Fetch locations
     const { data: locations, error: locError } = await supabase
       .from('sensor_locations')
-      .select('id, longitude, latitude')
+      .select('id, longitude, latitude, name')
 
     if (locError) {
       console.error('Supabase location fetch error:', locError);
