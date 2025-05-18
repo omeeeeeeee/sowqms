@@ -13,10 +13,6 @@
 	}));
 
 	let selected = null;
-
-	function clearSelected() {
-		selected = null;
-	}
   </script>
   
 
@@ -29,7 +25,7 @@
 		<div class="flex flex-row items-center justify-between h-14 lexend-semibold rounded-t-md bg-sky-600 text-white">
 			{#if selected}
 				<p class="ml-5 text-[22px]">{selected.name}</p>
-				<button id="clear-selection" class="hover:bg-red-400 px-5 h-full rounded-tr-sm" on:click={clearSelected}>X</button>
+				<button id="clear-selection" class="hover:bg-red-400 px-5 h-full rounded-tr-sm" on:click={() => selected = null}>X</button>
 			{/if}
 		</div>
 
