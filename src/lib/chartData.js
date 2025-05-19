@@ -14,7 +14,7 @@ export const ChartData = (type, labels, data, color, day) => {
       ],
     },
     options: {
-      spanGaps: 5 * 60 * 1000,
+      spanGaps: 15 * 60 * 1000,
       maintainAspectRatio: false,
       scales: {
         x: {
