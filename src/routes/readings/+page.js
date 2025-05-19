@@ -43,7 +43,10 @@ export async function load({ fetch, url }) {
 	// Fetch values save addresses
 	const phValues = result.range.map(item => item.ph);
 	const turbValues = result.range.map(item => item.turbidity);
-	const dates = result.range.map(item => item.created_at);
+	const dates = result.range.map(item => {
+			const utcDate = new Date(item.created_at);
+			return new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
+		});
 	const locID = result.locations.map(item => item.id);
 	const locName = result.locations.map(item => item.name);
 	const locLong = result.locations.map(item => item.longitude);

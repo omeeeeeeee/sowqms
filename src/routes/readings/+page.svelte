@@ -93,9 +93,9 @@
 	currentTurbidity === undefined || currentTurbidity === null
 		? "N/A"
 		: currentTurbidity <= 1
-		? "Safe (Drinking/Treated)"
+		? "Safe (Drinking/Treated Water)"
 		: currentTurbidity <= 50	// double check? previously = 10
-		? "Safe (Freshwater)"
+		? "Safe (Recreational Water e.g. Rivers and Lakes)"
 		: currentTurbidity <= 100
 		? "Stressful to Aquatic Life"
 		: "Unsafe for Aquatic Life";
@@ -152,7 +152,6 @@
 		<p class="text-[22px] inter-semibold text-white rounded-t-md bg-sky-600 px-5 py-2">Current readings</p>
 
 		<div class="bg-gray-50 border-b-2 border-x-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-b-md p-5 space-y-6.5">
-			
 			<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
 				<div class="flex flex-col items-center space-y-1.5 w-65">
 					<div class="flex flex-row justify-center items-center">

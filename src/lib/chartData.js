@@ -2,14 +2,13 @@ export const ChartData = (type, labels, data, color, day) => {
   return {
     type: 'line',
     data: {
-      labels: labels.filter(p => day !== "" ? p.startsWith(day) : true),
+      labels: labels.filter(p => day !== "" ? p.toISOString().startsWith(day) : true),
       datasets: [
         {
           label: type,
           data: data
             .map((d, i) => ({ x: labels[i], y: d }))
-            .filter(p => day !== "" ? p.x.startsWith(day) : true)
-            ,
+            .filter(p => day !== "" ? p.x.toISOString().startsWith(day) : true),
           backgroundColor: color,
         },
       ],
@@ -23,11 +22,12 @@ export const ChartData = (type, labels, data, color, day) => {
           max: day ? day + 'T23:59:59' : undefined,
           type: 'time',
           time: {
-            unit: day ? 'hour' : 'day', 
+            unit: day ? 'hour' : 'day',
             tooltipFormat: 'PPpp',
             displayFormats: {
-              day: day ? 'HH:mm' : 'MMM d',
-            },
+              hour: 'HH:mm',
+              day: 'MMM d',
+            }
           },
           title: {
             display: true,
