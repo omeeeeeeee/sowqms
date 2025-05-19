@@ -18,7 +18,6 @@
 </script>
 
 <div class="relative overflow-hidden">
-    <!-- Background image with dark overlay -->
     <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
       style="background-image: url('https://images.pexels.com/photos/40784/drops-of-water-water-nature-liquid-40784.jpeg?cs=srgb&dl=pexels-pixabay-40784.jpg&fm=jpg'); top: -20px;"
@@ -26,7 +25,6 @@
       <div class="absolute inset-0 bg-black/50"></div>
     </div>
   
-    <!-- Foreground content -->
     <div class="relative z-10 flex flex-col items-center justify-center text-white px-5 py-20 space-y-5">
       <p class="lexend-bold text-[36px] text-center">LiniSense</p>
       <p class="inter-regular text-center max-w-xl">
