@@ -1,36 +1,28 @@
 // Function for converting Coordinates to Addresses
-// Function for converting Coordinates to Addresses (JavaScript version)
 async function convertCoordsToAddresses(latitudes, longitudes) {
+	const apiKey = '77b3ab13e2ac4de192cc685c22f9180f';
+
 	if (latitudes.length !== longitudes.length) {
 		throw new Error("Latitude and longitude arrays must be the same length.");
 	}
-
-	const results = [];
-
-	for (let i = 0; i < latitudes.length; i++) {
-	const lat = latitudes[i];
-	const lon = longitudes[i];
-	const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-
-	try {
-		const response = await fetch(url, {
-			headers: {
-				"User-Agent": "MyApp/1.0 (you@example.com)",
-			},
-		});
-
-		if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-		const data = await response.json();
-		results.push(data.display_name ?? "No address found");
-	} catch (err) {
-		console.error(`Error for (${lat}, ${lon}):`, err);
-		results.push("Error retrieving address");
-	}
-
-	await new Promise(resolve => setTimeout(resolve, 1000)); // rate limit
-	}
   
-	return results;
+	const requests = latitudes.map((lat, i) => {
+	  const lon = longitudes[i];
+	  const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${apiKey}`;
+  
+	  return fetch(url)
+		.then(res => res.json())
+		.then(data => {
+			const address = data.features?.[0]?.properties?.formatted;
+			return address ?? "No address found";
+		})
+		.catch(err => {
+			console.error(`Error for (${lat}, ${lon}):`, err);
+			return "Error retrieving address";
+		});
+	});
+  
+	return await Promise.all(requests);
 }
 
 export async function load({ fetch, url }) {
