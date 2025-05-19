@@ -5,21 +5,44 @@
   function goToMap() {
     goto('/map');
   }
+
+  // add field for img
+  const teamMems = [
+    { name: "Shane Odhuno", role: "Project Manager" },
+    { name: "Ramon Comendador", role: "Firmware Team" },
+    { name: "Jakin Bacalla", role: "Firmware Team" },
+    { name: "Seth Eliserio", role: "Frontend Developer" },
+    { name: "Anton Gosiengfiao", role: "Backend Developer" },
+    { name: "Naomi Amparo", role: "Backend Developer" },
+  ];
 </script>
 
-<div class="flex flex-col items-center justify-center text-white rounded-md bg-sky-600 px-5 py-10 space-y-5">
-  <p class="inter-bold text-[36px] text-center">LiniSense</p>
-  <p class="inter-regular text-center max-w-xl">
-    Real-time monitoring of pH and turbidity in Philippine waterways. Promoting transparency,
-    safety, and sustainability.
-  </p>
-  <button
-    class="bg-white text-sky-700 font-semibold px-5 py-2 rounded hover:bg-slate-100 transition"
-    on:click={goToMap}
-  >
-    View Map
-  </button>
-</div>
+<div class="relative overflow-hidden">
+    <!-- Background image with dark overlay -->
+    <div
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+      style="background-image: url('https://images.pexels.com/photos/40784/drops-of-water-water-nature-liquid-40784.jpeg?cs=srgb&dl=pexels-pixabay-40784.jpg&fm=jpg'); top: -20px;"
+    >
+      <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+  
+    <!-- Foreground content -->
+    <div class="relative z-10 flex flex-col items-center justify-center text-white px-5 py-20 space-y-5">
+      <p class="lexend-bold text-[36px] text-center">LiniSense</p>
+      <p class="inter-regular text-center max-w-xl">
+        Real-time monitoring of pH and turbidity in Philippine waterways. Promoting transparency,
+        safety, and sustainability.
+      </p>
+      <button
+        class="bg-white text-sky-700 font-semibold px-5 py-2 rounded hover:bg-slate-100 transition"
+        on:click={goToMap}
+      >
+        View Map
+      </button>
+    </div>
+  </div>
+  
+  
 
 <div class="py-10 px-7.5 space-y-8">
   <div class="flex flex-col items-center">
@@ -45,50 +68,28 @@
 <div class="bg-sky-600 text-white py-10 px-7.5 mt-10">
   <div class="flex flex-col items-center">
     <p class="inter-semibold text-[22px] mb-2">About the Project</p>
-    <p class="inter-regular max-w-2xl text-center">
-      This platform was developed by BS Computer Science students of University of the Philippines Diliman in fulfillment of the class project 
+    <p class="inter-regular max-w-3xl text-center">
+      This platform was developed by BS Computer Science students of University of the Philippines - Diliman in fulfillment of the capstone project 
       for CS 145: Computer Networks. 
     </p>
   </div>
 </div>
 
 <div class="bg-gray-100 text-sky-900 py-10 px-7.5">
-  <div class="flex flex-col items-center space-y-4">
-    <p class="inter-semibold text-[22px]">Meet the Team</p>
-    <div class="flex flex-wrap justify-center gap-x-12 gap-y-10 mt-5">
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Shane Odhuno</p>
-        <p class="inter-regular text-sm text-center">Project Manager</p>
-      </div>
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Ramon Comendador</p>
-        <p class="inter-regular text-sm text-center">Firmware Team</p>
-      </div>
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Jakin Bacalla</p>
-        <p class="inter-regular text-sm text-center">Firmware Team</p>
-      </div>
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Seth Eliserio</p>
-        <p class="inter-regular text-sm text-center">Frontend Developer</p>
-      </div>
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Anton Gosiengfiao</p>
-        <p class="inter-regular text-sm text-center">Backend Developer</p>
-      </div>
-      <div class="flex flex-col items-center space-y-2">
-        <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
-        <p class="inter-semibold">Naomi Amparo</p>
-        <p class="inter-regular text-sm text-center">Backend Developer</p>
+    <div class="flex flex-col items-center space-y-1.5">
+      <p class="inter-semibold text-[22px]">Meet the Team</p>
+      <div class="flex flex-wrap justify-center gap-x-12 gap-y-10 mt-5">
+        {#each teamMems as mem}
+          <div class="flex flex-col items-center space-y-1.5 w-36 text-center">
+            <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
+            <p class="inter-semibold space-y-[5px]">{mem.name}</p>
+            <p class="inter-regular text-sm">{mem.role}</p>
+          </div>
+        {/each}
       </div>
     </div>
   </div>
-</div>
+  
 
 <style>
   .inter-regular {
@@ -98,9 +99,5 @@
   .inter-semibold {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-  }
-  .inter-bold {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
   }
 </style>
