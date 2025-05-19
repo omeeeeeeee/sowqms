@@ -73,6 +73,8 @@ export async function GET({ url }) {
 
     const { data: latestReading, error: latestError } = await latestQuery;
 
+    console.log(latestError);
+
     if (latestError) {
       console.error('Supabase latest fetch error:', latestError);
       return json({ success: false, message: 'Failed to fetch latest reading' }, { status: 500 });

@@ -13,10 +13,11 @@
 	import { chartRender } from '$lib/chartRender.js';
 	import { ChartData } from '$lib/chartData';
 	import { DateTime } from 'luxon';
-	
+
 	import Map from '$lib/Map.svelte';
 	import PhBar from '$lib/PhBar.svelte';
 	import TurbBar from '$lib/TurbBar.svelte';
+	import Tooltip from '$lib/Tooltip.svelte';
 
 	let marker = [{
 		lng: locLong,
@@ -74,7 +75,7 @@
 	let turbChart;
 	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', dateFilter);
 	
-	$: currentPh = $ph ?? reading.ph ?? null;
+	$: currentPh = $ph ?? reading?.ph ?? null;
 
 	$: phStatus =
 		currentPh === undefined || currentPh === null
@@ -85,7 +86,7 @@
 		? "Acidic"
 		: "Basic";
 
-	$: currentTurbidity = $turbidity ?? reading.turbidity ?? null;
+	$: currentTurbidity = $turbidity ?? reading?.turbidity ?? null;
 
 	// Ref: https://in-situ.com/en/faq/water-quality-information/turbidity-faqs/what-are-typical-turbidity-values-in-natural-environments?srsltid=AfmBOoqX5CR7qDVYosA1G-2JTLVTodYZz-X38FniG8vWrQ1wAvgPEFFp
 	$: turbidityStatus =
@@ -114,19 +115,33 @@
 	$: waterStatusClass =
 		waterStatus === "SAFE" ? "wssafe" :
 		waterStatus === "UNSAFE" ? "wsunsafe" : "";
+
+	const qualityInfo = "this is about overall quality";
+	const phInfo = "this is about pH";
+	const turbInfo = "this is about turbidity";
 </script>
 
 <div class="py-5 px-7.5 space-y-2">
 	
 
 	<div class="flex flex-col sm:flex-row h-auto max-h-100">
-		<div class="flex flex-col items-center justify-center text-white rounded-t-md sm:rounded-r-none sm:rounded-l-md bg-sky-600 px-5 py-2">
-			<!-- IMG -->
-			<p class="inter-semibold text-[30px]">{locName}</p>
-			<p class="inter-regular text-center text-sm">{locAddress}</p>
+		<div class="flex flex-col items-center justify-center text-white rounded-t-md sm:rounded-r-none sm:rounded-l-md">
+			<div class="h-full flex flex-col items-center justify-center text-white rounded-t-md sm:rounded-r-none sm:rounded-tl-md bg-sky-600 px-5 py-2">
+				<p class="inter-semibold text-[30px]">{locName}</p>
+				<p class="inter-regular text-center text-sm">{locAddress}</p>
+			</div>
+
+			<div class="h-full w-full bg-gray-50 flex flex-col justify-center items-center space-y-1.5 border-x-2 sm:rounded-bl-md sm:border-b-2 sm:border-l-2 border-gray-200 py-3.5">
+				<div class="flex flex-row justify-center items-center">
+					<p class="inter-regular text-black">Water Quality</p>
+					<Tooltip text={qualityInfo} />
+				</div>
+				<p class="text-[40px] mt-[-13px] inter-bold {waterStatusClass}">{waterStatus}</p>
+			</div>
+
 		</div>
 
-		<div class="h-75 w-full rounded-b-md sm:rounded-l-none sm:rounded-r-md border-2 border-gray-200">
+		<div class="h-75 w-full rounded-b-md sm:rounded-l-none sm:rounded-r-md border-2 sm:border-l-0 border-gray-200">
 			<Map markers={marker} selected={selected} />
 		</div>
 	</div>
@@ -137,21 +152,23 @@
 		<p class="text-[22px] inter-semibold text-white rounded-t-md bg-sky-600 px-5 py-2">Current readings</p>
 
 		<div class="bg-gray-50 border-b-2 border-x-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-b-md p-5 space-y-6.5">
-			<div class="flex flex-col items-center space-y-1.5">
-				<p class="inter-regular">Water Quality</p>
-				<p class="text-[40px] mt-[-13px] inter-bold {waterStatusClass}">{waterStatus}</p>
-			</div>
-
+			
 			<div class="flex flex-wrap justify-center sm:space-x-25 space-y-6.5 sm:space-y-0">
 				<div class="flex flex-col items-center space-y-1.5 w-65">
-					<p class="inter-regular">pH Level</p>
+					<div class="flex flex-row justify-center items-center">
+						<p class="inter-regular">pH Level</p>
+						<Tooltip text={phInfo} />
+					</div>
 					<p class="text-[40px] mt-[-13px] inter-bold">{currentPh.toFixed(1) ?? "N/A"}</p>	
 					<PhBar selected={Number(currentPh)} />
 					<p class="text-sm inter-semibold {phStatus.toLowerCase()}">{phStatus}</p>
 				</div>
 
 				<div class="flex flex-col items-center space-y-1.5 w-65">
-					<p class="inter-regular">Turbidity</p>
+					<div class="flex flex-row justify-center items-center">
+						<p class="inter-regular">Turbidity</p>
+						<Tooltip text={turbInfo} />
+					</div>
 					<p class="text-[40px] mt-[-13px] inter-bold">{currentTurbidity.toFixed(1) ?? 'N/A'}</p>
 					<TurbBar selected={Number(currentTurbidity)} />
 					<p class="text-sm inter-semibold {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
