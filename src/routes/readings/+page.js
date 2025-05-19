@@ -47,7 +47,6 @@ export async function load({ fetch, url }) {
 			const utcDate = new Date(item.created_at);
 			return new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
 		});
-
 	const locID = result.locations.map(item => item.id);
 	const locName = result.locations.map(item => item.name);
 	const locLong = result.locations.map(item => item.longitude);
