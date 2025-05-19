@@ -72,7 +72,6 @@ export async function load({ fetch, url }) {
 	}
 
     // console.log(locAddress);
-	console.log(result.latest);
 
 	return {
 		reading: result.latest ?? null,

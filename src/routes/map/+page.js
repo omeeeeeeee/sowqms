@@ -64,7 +64,7 @@ export async function load({ fetch, url }) {
 	// console.log(turbValues);
 	// console.log(dates);
 
-    console.log(locAddress);
+    // console.log(locAddress);
 
 	return {
 		reading: result.latest ?? null,
