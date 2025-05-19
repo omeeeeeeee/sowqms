@@ -116,9 +116,18 @@
 		waterStatus === "SAFE" ? "wssafe" :
 		waterStatus === "UNSAFE" ? "wsunsafe" : "";
 
-	const qualityInfo = "this is about overall quality";
-	const phInfo = "this is about pH";
-	const turbInfo = "this is about turbidity";
+	const qualityInfo = `The overall water quality is determined safe if the pH level is between 6.5 to 8.5 and the turbidity <= 50.`;
+	const phInfo = `pH level measures how acidic or alkaline<br>the water is on a scale of 0 to 14. 
+					<br> <br>
+					pH = 7 is neutral <br>
+					pH < 7 is acidic <br>
+					pH > 7 is basic`;
+	const turbInfo = `Turbidity measures cloudiness or haziness of the water.
+					<br> <br>
+					turbidity <= 1 is safe for drinking/treated water <br>
+					turbidity <= 50 is safe for recreational purposes <br>
+					turbidity <= 100 is stressful to aquatic life, <br>
+					otherwise, unsafe for aquatic life`;
 </script>
 
 <div class="py-5 px-7.5 space-y-2">
@@ -170,7 +179,7 @@
 					</div>
 					<p class="text-[40px] mt-[-13px] inter-bold">{currentTurbidity.toFixed(1) ?? 'N/A'}</p>
 					<TurbBar selected={Number(currentTurbidity)} />
-					<p class="text-sm inter-semibold {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
+					<p class="text-sm inter-semibold text-center {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
 				</div>
 			</div>
 
@@ -195,7 +204,7 @@
 		<p class="text-[22px] inter-semibold text-white rounded-t-md bg-sky-600 px-5 py-2">Historical data</p>
 	
 		<div class="border-b-2 border-x-2 border-gray-200 w-full flex flex-col items-center justify-center rounded-b-md p-5 space-y-6.5 inter-regular">
-			<div class="flex flex-row space-x-2.5 items-center justify-center">
+			<div class="flex flex-col space-y-1.5 items-center justify-center">
 				<p >Date filter: </p>
 				<input type="date" bind:value={dateFilter} class="bg-neutral-100 border-1 border-gray-200 rounded-sm text-xs text-gray-700 px-3 py-1.5" />
 			</div>

@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
     import "../app.css";
+	
 	import IconHome from '$lib/icons/IconHome.svelte';
 	import IconMap from '$lib/icons/IconMap.svelte';
 
@@ -23,7 +24,7 @@
 	aria-label="go-back"
 	type="button"
 	class="absolute top-4 left-4 text-white px-4 py-2 rounded hover:bg-sky-700 z-50"
-	onclick={() => history.length > 1 ? history.back() : goto('/map')}
+	onclick={() => goto('/map')}
 	>
 		<svg id='Back_24' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#ffffff' opacity='0'/>
 			<g transform="matrix(1.65 0 0 1.65 12 12)" >
