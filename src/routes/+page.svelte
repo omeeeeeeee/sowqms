@@ -80,7 +80,7 @@
         {#each teamMems as mem}
           <div class="flex flex-col items-center space-y-1.5 w-36 text-center">
             {#if mem.pic}
-              <div class={`w-24 h-24 bg-[url("${mem.pic}")] bg-cover rounded-full`}></div>
+              <img class="w-24 h-24 bg-cover rounded-full" src="{mem.pic}" alt="img" />
             {:else}
               <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
             {/if}
