@@ -20,7 +20,7 @@
     </div>
   
     <div class="relative z-10 flex flex-col items-center justify-center text-white px-5 py-20 space-y-5">
-      <img src="/src/lib/icons/icon.png" alt="logo.png" class="w-25 h-25 mb-0" />  
+      <img src="/icon.png" alt="logo.png" class="w-25 h-25 mb-0" />  
       <p class="lexend-bold text-[36px] text-center">LiniSense</p>
       <p class="inter-regular text-center max-w-xl">
         Real-time monitoring of pH and turbidity in Philippine waterways. Promoting transparency,

@@ -38,7 +38,7 @@
 <div class="min-h-screen bg-gray-100">	
 	<div class="bg-sky-600 flex flex-row justify-center p-4 pr-6.5">
 		<div class="flex flex-row space-x-3.5 items-center">
-			<img src="/src/lib/icons/icon.png" alt="logo.png" class="w-10 h-10 object-cover" />  
+			<img src="/icon.png" alt="logo.png" class="w-10 h-10 object-cover" />  
 			<p class="text-[25px] lexend-bold text-white">LiniSense</p>
 		</div>
 	</div>
