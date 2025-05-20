@@ -23,7 +23,7 @@ export async function load({ fetch, url }) {
 	// Use function above to get the addresses of the longitude, latitudes
 	try {
 		locAddress = await convertCoordsToAddresses(locLat, locLong);
-		console.log("Location Addresses:", locAddress);
+		// console.log("Location Addresses:", locAddress);
 	} catch (error) {
 		console.error("Error retrieving addresses:", error);
 	}

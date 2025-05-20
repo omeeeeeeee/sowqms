@@ -12,8 +12,6 @@
 		: selected <= 100
 		? [...turbColors.slice(1), Array(1).fill('#ffffff')].flat()
 		: turbColors
-
-  console.log(colors);
 </script>
 
 <div class="relative flex w-full h-6.5 border border-gray-300 rounded-lg">
