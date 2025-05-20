@@ -7,6 +7,7 @@
 	
 	import IconHome from '$lib/icons/IconHome.svelte';
 	import IconMap from '$lib/icons/IconMap.svelte';
+	import Logo from '$lib/icons/icon.png'
 
 	let routes = [
 		{ name: "Home", href: "/", icon: IconHome },
@@ -36,8 +37,8 @@
 
 <div class="min-h-screen bg-gray-100">	
 	<div class="bg-sky-600 flex flex-row justify-center p-4 pr-6.5">
-		<div class="flex flex-row space-x-2 items-center">
-			<div class="w-10 h-10 rounded-full bg-neutral-300"></div>
+		<div class="flex flex-row space-x-3.5 items-center">
+			<img src="/src/lib/icons/icon.png" alt="logo.png" class="w-10 h-10 object-cover" />  
 			<p class="text-[25px] lexend-bold text-white">LiniSense</p>
 		</div>
 	</div>

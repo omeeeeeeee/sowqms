@@ -8,7 +8,7 @@
 
   // add field for img
   const teamMems = [
-    { name: "Shane Odhuno", role: "Project Manager", pic: "" },
+    { name: "Shane Odhuno", role: "Project Manager", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Shane%20Pic.jpg" },
     { name: "Ramon Comendador Jr.", role: "Firmware Team", pic: "" },
     { name: "Jakin Bacalla", role: "Firmware Team", pic: "" },
     { name: "Seth Eliserio", role: "Frontend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Eliserio,%20Seth%20Michael%20R._54917.jpg" },
@@ -26,6 +26,7 @@
     </div>
   
     <div class="relative z-10 flex flex-col items-center justify-center text-white px-5 py-20 space-y-5">
+      <img src="/src/lib/icons/icon.png" alt="logo.png" class="w-25 h-25 mb-0" />  
       <p class="lexend-bold text-[36px] text-center">LiniSense</p>
       <p class="inter-regular text-center max-w-xl">
         Real-time monitoring of pH and turbidity in Philippine waterways. Promoting transparency,
