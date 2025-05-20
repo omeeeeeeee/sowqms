@@ -8,12 +8,12 @@
 
   // add field for img
   const teamMems = [
-    { name: "Shane Odhuno", role: "Project Manager" },
-    { name: "Ramon Comendador", role: "Firmware Team" },
-    { name: "Jakin Bacalla", role: "Firmware Team" },
-    { name: "Seth Eliserio", role: "Frontend Developer" },
-    { name: "Anton Gosiengfiao", role: "Backend Developer" },
-    { name: "Naomi Amparo", role: "Backend Developer" },
+    { name: "Shane Odhuno", role: "Project Manager", pic: "" },
+    { name: "Ramon Comendador Jr.", role: "Firmware Team", pic: "" },
+    { name: "Jakin Bacalla", role: "Firmware Team", pic: "" },
+    { name: "Seth Eliserio", role: "Frontend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Eliserio,%20Seth%20Michael%20R._54917.jpg" },
+    { name: "Anton Gosiengfiao", role: "Backend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Anton%20Formal%20Pic.jpg" },
+    { name: "Naomi Amparo", role: "Backend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Naomi%20Formal%20Pic.jpg" },
   ];
 </script>
 
@@ -79,7 +79,11 @@
       <div class="flex flex-wrap justify-center gap-x-12 gap-y-10 mt-5">
         {#each teamMems as mem}
           <div class="flex flex-col items-center space-y-1.5 w-36 text-center">
-            <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
+            {#if mem.pic}
+              <div class={`w-24 h-24 bg-[url("${mem.pic}")] bg-cover rounded-full`}></div>
+            {:else}
+              <div class="w-24 h-24 bg-gray-300 rounded-full"></div>
+            {/if}
             <p class="inter-semibold space-y-[5px]">{mem.name}</p>
             <p class="inter-regular text-sm">{mem.role}</p>
           </div>
