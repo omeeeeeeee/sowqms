@@ -33,14 +33,14 @@
 			<div class="flex flex-col items-center space-y-1">
 				{#if selected}
 					<p class="text-black text-md inter-semibold">Address</p>
-					<p class="text-gray-500 text-sm inter-regular">{selected.addr}</p>
+					<p class="text-gray-500 text-sm inter-regular text-center">{selected.addr}</p>
 
 					<!-- IMAGE -->
 					<!-- CURR READINGS -->
 
 					<!-- BUTTON -->
 					<br>
-					<a href="/readings?location={selected.id}" class="inline-block bg-sky-500 text-white inter-regular text-sm hover:bg-sky-600 px-4 py-2 rounded-lg">
+					<a href="/readings?location={selected.id}" class="inline-block bg-sky-500 text-white inter-regular text-sm hover:bg-sky-600 px-4 py-2 rounded-md">
 						View readings
 					</a>
 				{:else}

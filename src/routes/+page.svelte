@@ -1,12 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
 
-  function goToMap() {
-    goto('/map');
-  }
-
-  // add field for img
   const teamMems = [
     { name: "Shane Odhuno", role: "Project Manager", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Shane%20Pic.jpg" },
     { name: "Ramon Comendador Jr.", role: "Firmware Team", pic: "" },
@@ -33,14 +27,13 @@
         safety, and sustainability.
       </p>
       <button
-        class="bg-white text-sky-700 font-semibold px-5 py-2 rounded hover:bg-slate-100 transition"
-        on:click={goToMap}
+        class="bg-white text-sky-700 font-semibold px-5 py-2 rounded-md hover:bg-slate-100 transition"
+        on:click={() => goto('/map')}
       >
-        View Map
+        {@html "View map"}
       </button>
     </div>
   </div>
-  
   
 
 <div class="py-10 px-7.5 space-y-8">

@@ -1,10 +1,7 @@
 import convertCoordsToAddresses from '$lib/convertCoords.js';
 
-export async function load({ fetch, url }) {
-	const loc = url.searchParams.get('location');
-	const locParam = loc ? '?location=' + loc : ''; 
-
-	const res = await fetch(`/api/arduino-data${locParam}`, { method: 'GET' } );
+export async function load({ fetch }) {
+	const res = await fetch(`/api/arduino-data`, { method: 'GET' } );
 	const result = await res.json();
 
 	// Fetch values save addresses
@@ -29,10 +26,6 @@ export async function load({ fetch, url }) {
 	}
 
 	// console.log(result.latest);
-	// console.log(phValues);
-	// console.log(turbValues);
-	// console.log(dates);
-
     // console.log(locAddress);
 
 	return {
