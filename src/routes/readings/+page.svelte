@@ -178,7 +178,7 @@
 						<Tooltip text={turbInfo} />
 					</div>
 					<p class="text-[40px] mt-[-13px] inter-bold">{currentTurbidity.toFixed(1) ?? 'N/A'}</p>
-					<TurbBar selected={Number(fooVal)} />
+					<TurbBar selected={Number(currentTurbidity)} />
 					<p class="text-sm inter-semibold text-center {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
 				</div>
 			</div>
