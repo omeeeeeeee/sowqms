@@ -16,12 +16,12 @@
   </script>
   
 
-<div class="flex flex-wrap items-top justify-center space-x-0 sm:space-x-5 space-y-7.5 py-7.5 px-5">
+<div class="flex flex-col sm:flex-row items-top justify-center space-x-0 sm:space-x-5 space-y-4.5 py-7.5 px-5">
 	<div class="h-75 sm:h-130 w-full max-w-230 rounded-md border-2 border-gray-200">
 		<Map markers={markers} bind:selected={selected} />
 	</div>
 
-	<div class="flex flex-col max-h-130 max-w-130 w-full">
+	<div class="flex flex-col max-h-130 sm:max-w-130 w-full">
 		<div class="flex flex-row items-center justify-between h-14 inter-semibold rounded-t-md bg-sky-600 text-white">
 			{#if selected}
 				<p class="ml-5 text-[22px]">{selected.name}</p>

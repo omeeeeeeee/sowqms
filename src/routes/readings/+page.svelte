@@ -151,7 +151,7 @@
 		</div>
 
 		<div class="h-75 w-full rounded-b-md sm:rounded-l-none sm:rounded-r-md border-2 sm:border-l-0 border-gray-200">
-			<Map markers={marker} selected={selected} />
+			<Map markers={marker} selected={selected} zoomed={true}/>
 		</div>
 	</div>
 

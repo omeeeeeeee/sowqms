@@ -6,6 +6,7 @@
 
   export let markers;
   export let selected = null;
+  export let zoomed = false;
 
   onMount(() => {
     const map = new maplibregl.Map({
@@ -35,7 +36,7 @@
 
     if (!bounds.isEmpty()) {
       map.fitBounds(bounds, {
-        padding: 100,    
+        padding: zoomed ? 10 : 75,    
         maxZoom: 14,    
         duration: 0     
       });

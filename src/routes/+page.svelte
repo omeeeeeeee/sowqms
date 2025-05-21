@@ -26,12 +26,12 @@
         Real-time monitoring of pH and turbidity in Philippine waterways. Promoting transparency,
         safety, and sustainability.
       </p>
-      <button
-        class="bg-white text-sky-700 font-semibold px-5 py-2 rounded-md hover:bg-slate-100 transition"
-        on:click={() => goto('/map')}
+      <a
+        class="bg-white text-sky-700 font-semibold px-5 py-2 rounded-md hover:bg-slate-200 transition"
+        href="/map"
       >
         {@html "View map"}
-      </button>
+      </a>
     </div>
   </div>
   
