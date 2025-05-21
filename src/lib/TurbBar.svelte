@@ -5,7 +5,9 @@
     '#0068B8', '#1F9EFF', '#70C1FF', '#99D3FF'
   ];
 
-  let colors = selected <= 1
+  let colors;
+
+  $: colors = selected <= 1
 		? [...turbColors.slice(3), Array(3).fill('#ffffff')].flat()
 		: selected <= 50	// double check? previously = 10
 		? [...turbColors.slice(2), Array(2).fill('#ffffff')].flat()

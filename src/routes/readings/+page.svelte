@@ -60,7 +60,7 @@
 		  }
 		)
 		.subscribe();
-  
+
 	  return () => {
 		supabase.removeChannel(channel);
 	  };
@@ -80,9 +80,9 @@
 	$: phStatus =
 		currentPh === undefined || currentPh === null
 		? "N/A"
-		: currentPh === 7
+		: Math.round(currentPh * 10) === 7 * 10
 		? "Neutral"
-		: currentPh < 7
+		: Math.round(currentPh * 10) < 7 * 10
 		? "Acidic"
 		: "Basic";
 
@@ -178,7 +178,7 @@
 						<Tooltip text={turbInfo} />
 					</div>
 					<p class="text-[40px] mt-[-13px] inter-bold">{currentTurbidity.toFixed(1) ?? 'N/A'}</p>
-					<TurbBar selected={Number(currentTurbidity)} />
+					<TurbBar selected={Number(fooVal)} />
 					<p class="text-sm inter-semibold text-center {turbidityStatus.toLowerCase()}">{turbidityStatus}</p>
 				</div>
 			</div>
