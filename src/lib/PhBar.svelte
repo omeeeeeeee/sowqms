@@ -23,7 +23,7 @@
     style="
       height: 150%;
       top: -25%;
-      left: {(selected / 15) * 100}%;
+      left: {(selected / 15) * 100 + 1}%;
       transform: translateX(4px);
     "></div>
 </div>
