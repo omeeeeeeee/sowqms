@@ -92,11 +92,11 @@
 	$: turbidityStatus =
 	currentTurbidity === undefined || currentTurbidity === null
 		? "N/A"
-		: currentTurbidity <= 1
+		: Math.round(currentTurbidity * 10) <= 1 * 10
 		? "Safe (Drinking/Treated Water)"
-		: currentTurbidity <= 50	// double check? previously = 10
+		: Math.round(currentTurbidity * 10) <= 50 * 10	// double check? previously = 10
 		? "Safe (Recreational Water e.g. Rivers and Lakes)"
-		: currentTurbidity <= 100
+		: Math.round(currentTurbidity * 10) <= 100 * 10
 		? "Stressful to Aquatic Life"
 		: "Unsafe for Aquatic Life";
 
