@@ -81,7 +81,7 @@
 		currentPh === undefined || currentPh === null
 		? "N/A"
 		: Math.round(currentPh * 10) === 7 * 10
-		? "Neutral"
+		? "Safe"
 		: Math.round(currentPh * 10) < 7 * 10
 		? "Acidic"
 		: "Basic";
@@ -108,7 +108,10 @@
 	$: waterStatus =
 		currentPh === null || currentTurbidity === null
 			? "Unknown"
-			: (currentPh >= 6.5 && currentPh <= 8.5 && currentTurbidity <= 50) // double check? previously = 10
+			: (Math.round(currentPh * 10) >= 6.5 * 10 
+				&& Math.round(currentPh * 10) <= 8.5 * 10 
+				&& Math.round(currentTurbidity * 10) <= 50 * 10
+			  ) // double check? previously = 10
 			? "SAFE"
 			: "UNSAFE";
 
