@@ -81,7 +81,7 @@
 		currentPh === undefined || currentPh === null
 		? "N/A"
 		: Math.round(currentPh * 10) === 7 * 10
-		? "Safe"
+		? "Neutral"
 		: Math.round(currentPh * 10) < 7 * 10
 		? "Acidic"
 		: "Basic";
