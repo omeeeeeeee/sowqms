@@ -4,7 +4,7 @@
   const teamMems = [
     { name: "Shane Odhuno", role: "Project Manager", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Shane%20Pic.jpg" },
     { name: "Ramon Comendador Jr.", role: "Firmware Team", pic: "" },
-    { name: "Jakin Bacalla", role: "Firmware Team", pic: "" },
+    { name: "Jakin Bacalla", role: "Firmware Team", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Jakin%20Formal%20Pic.jpg" },
     { name: "Seth Eliserio", role: "Frontend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Eliserio,%20Seth%20Michael%20R._54917.jpg" },
     { name: "Anton Gosiengfiao", role: "Backend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Anton%20Formal%20Pic.jpg" },
     { name: "Naomi Amparo", role: "Backend Developer", pic: "https://eupfesgmnanqwfdfmnaw.supabase.co/storage/v1/object/public/homepage//Naomi%20Formal%20Pic.jpg" },
