@@ -19,6 +19,8 @@
 	import TurbBar from '$lib/TurbBar.svelte';
 	import Tooltip from '$lib/Tooltip.svelte';
 
+	let offset = 2.0;
+
 	let marker = [{
 		lng: locLong,
 		lat: locLat,
@@ -70,7 +72,7 @@
 	let dateFilter = '';
 
 	let phChart;
-	$: phChart = ChartData('pH level', dates, phValues, 'rgba(115, 90, 145, 0.8)', dateFilter);
+	$: phChart = ChartData('pH level', dates, phValues.forEach(p => (p - offset)), 'rgba(115, 90, 145, 0.8)', dateFilter);
 
 	let turbChart;
 	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', dateFilter);
@@ -80,9 +82,9 @@
 	$: phStatus =
 		currentPh === undefined || currentPh === null
 		? "N/A"
-		: Math.round(currentPh * 10 - 20) === 7 * 10
+		: Math.round((currentPh - offset)* 10) === 7 * 10
 		? "Neutral"
-		: Math.round(currentPh * 10 - 20) < 7 * 10
+		: Math.round((currentPh - offset)* 10) < 7 * 10
 		? "Acidic"
 		: "Basic";
 
@@ -108,8 +110,8 @@
 	$: waterStatus =
 		currentPh === null || currentTurbidity === null
 			? "Unknown"
-			: (Math.round(currentPh * 10 - 20) >= 6.5 * 10 
-				&& Math.round(currentPh * 10 - 20) <= 8.5 * 10 
+			: (Math.round((currentPh - offset) * 10) >= 6.5 * 10 
+				&& Math.round((currentPh - offset) * 10) <= 8.5 * 10 
 				&& Math.round(currentTurbidity * 10) <= 50 * 10
 			  ) // double check? previously = 10
 			? "SAFE"
@@ -170,8 +172,8 @@
 						<p class="inter-regular">pH Level</p>
 						<Tooltip text={phInfo} />
 					</div>
-					<p class="text-[40px] mt-[-13px] inter-bold">{(currentPh - 2.0).toFixed(1) ?? "N/A"}</p>	
-					<PhBar selected={Number(currentPh) - 2.00} />
+					<p class="text-[40px] mt-[-13px] inter-bold">{(currentPh - offset).toFixed(1) ?? "N/A"}</p>	
+					<PhBar selected={Number(currentPh) - offset} />
 					<p class="text-sm inter-semibold {phStatus.toLowerCase()}">{phStatus}</p>
 				</div>
 
