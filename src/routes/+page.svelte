@@ -61,7 +61,7 @@
   <div class="flex flex-col items-center">
     <p class="inter-semibold text-[22px] mb-2">About the Project</p>
     <p class="inter-regular max-w-3xl text-center">
-      This platform was developed by BS Computer Science students of University of the Philippines - Diliman in fulfillment of the capstone project 
+      This system was developed by BS Computer Science students of University of the Philippines - Diliman in fulfillment of the capstone project 
       for CS 145: Computer Networks. 
     </p>
   </div>

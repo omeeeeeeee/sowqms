@@ -19,7 +19,7 @@
 	import TurbBar from '$lib/TurbBar.svelte';
 	import Tooltip from '$lib/Tooltip.svelte';
 
-	let offset = 2.0;
+	let offset = 0.0;
 
 	let marker = [{
 		lng: locLong,
