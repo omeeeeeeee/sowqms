@@ -72,7 +72,7 @@
 	let dateFilter = '';
 
 	let phChart;
-	$: phChart = ChartData('pH level', dates, phValues.forEach(p => (p - offset)), 'rgba(115, 90, 145, 0.8)', dateFilter);
+	$: phChart = ChartData('pH level', dates, phValues.map(p => p - offset), 'rgba(115, 90, 145, 0.8)', dateFilter);
 
 	let turbChart;
 	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', dateFilter);
