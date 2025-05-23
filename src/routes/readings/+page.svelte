@@ -35,7 +35,7 @@
 	  PUBLIC_SUPABASE_ANON_KEY
 	);
   
-	const ph = writable<Number | null>(null);
+	let ph;
 	const turbidity = writable<Number | null>(null);
 	const lastUpdated = writable<string | null>(null);
   
@@ -54,7 +54,7 @@
 		  },
 		  (payload) => {
 			const row = payload.new;
-			ph.set(row.ph);
+			ph = row.ph;
 			turbidity.set(row.turbidity);
 			lastUpdated.set(String(row.created_at));
 		  }
@@ -75,14 +75,14 @@
 	let turbChart;
 	$: turbChart = ChartData('Turbidity', dates, turbValues, 'rgba(90, 115, 145, 0.8)', dateFilter);
 	
-	$: currentPh = $ph ?? reading?.ph ?? null;
+	$: currentPh = ph ? ph : (reading ? reading.ph : null);
 
 	$: phStatus =
 		currentPh === undefined || currentPh === null
 		? "N/A"
-		: Math.round(currentPh * 10) === 7 * 10
+		: Math.round(currentPh * 10 - 20) === 7 * 10
 		? "Neutral"
-		: Math.round(currentPh * 10) < 7 * 10
+		: Math.round(currentPh * 10 - 20) < 7 * 10
 		? "Acidic"
 		: "Basic";
 
@@ -108,8 +108,8 @@
 	$: waterStatus =
 		currentPh === null || currentTurbidity === null
 			? "Unknown"
-			: (Math.round(currentPh * 10) >= 6.5 * 10 
-				&& Math.round(currentPh * 10) <= 8.5 * 10 
+			: (Math.round(currentPh * 10 - 20) >= 6.5 * 10 
+				&& Math.round(currentPh * 10 - 20) <= 8.5 * 10 
 				&& Math.round(currentTurbidity * 10) <= 50 * 10
 			  ) // double check? previously = 10
 			? "SAFE"
@@ -170,8 +170,8 @@
 						<p class="inter-regular">pH Level</p>
 						<Tooltip text={phInfo} />
 					</div>
-					<p class="text-[40px] mt-[-13px] inter-bold">{currentPh.toFixed(1) ?? "N/A"}</p>	
-					<PhBar selected={Number(currentPh)} />
+					<p class="text-[40px] mt-[-13px] inter-bold">{(currentPh - 2.0).toFixed(1) ?? "N/A"}</p>	
+					<PhBar selected={Number(currentPh) - 2.00} />
 					<p class="text-sm inter-semibold {phStatus.toLowerCase()}">{phStatus}</p>
 				</div>
 
